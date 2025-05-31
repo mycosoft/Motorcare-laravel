@@ -69,19 +69,19 @@
                             <div class="d-flex align-items-center p-3 cursor-pointer" onclick="toggleOfficeDetails('{{ $office->id }}')">
                                 <!-- Marker Icon -->
                                 <div class="me-3">
-                                    <div class="bg-{{ $markerColor }} text-white rounded-circle d-flex align-items-center justify-center" style="width: 32px; height: 32px; font-weight: bold; font-size: 14px;">
+                                    <div class="text-white rounded-circle d-flex align-items-center justify-center" style="width: 32px; height: 32px; font-weight: bold; font-size: 14px; background: #FF6B35;">
                                         {{ $markerLetter }}
                                     </div>
                                 </div>
 
                                 <!-- Office Name -->
                                 <div class="flex-grow-1">
-                                    <h6 class="office-name mb-0 fw-bold text-uppercase" style="font-size: 13px;">{{ $office->name }}</h6>
+                                    <h6 class="office-name mb-0 fw-bold text-uppercase" style="font-size: 11px;">{{ $office->name }}</h6>
                                 </div>
 
                                 <!-- Dropdown Arrow -->
                                 <div class="office-toggle">
-                                    <i class="fas fa-chevron-down text-muted" style="transition: transform 0.3s;"></i>
+                                    <i class="fas fa-chevron-down" style="transition: transform 0.3s; font-size: 14px; color: #FF6B35;"></i>
                                 </div>
                             </div>
 
@@ -181,21 +181,24 @@
                                         $topPercent = max(5, min(95, $topPercent));
                                         $leftPercent = max(5, min(95, $leftPercent));
 
-                                        $colors = ['#dc3545', '#28a745', '#007bff', '#ffc107', '#6f42c1', '#fd7e14', '#20c997', '#e83e8c'];
-                                        $markerColor = $colors[$index % count($colors)];
+                                        // Use letters for markers
+                                        $markerLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+                                        $markerLetter = $markerLetters[$index % count($markerLetters)];
                                     @endphp
 
                                     <div class="position-absolute office-map-marker"
                                          style="top: {{ $topPercent }}%; left: {{ $leftPercent }}%; transform: translate(-50%, -100%); pointer-events: auto; cursor: pointer; z-index: 10;"
                                          data-office-id="{{ $office->id }}"
                                          onclick="highlightOfficeCard('{{ $office->id }}')">
-                                        <!-- Marker Pin -->
+                                        <!-- Marker with Letter -->
                                         <div class="position-relative">
-                                            <div style="width: 24px; height: 30px; background: {{ $markerColor }}; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 2px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.4);"></div>
-                                            <!-- Marker Center Dot -->
-                                            <div class="position-absolute" style="top: 6px; left: 6px; width: 6px; height: 6px; background: white; border-radius: 50%; transform: rotate(45deg);"></div>
+                                            <!-- Orange circular marker with letter -->
+                                            <div class="d-flex align-items-center justify-center text-white fw-bold"
+                                                 style="width: 32px; height: 32px; background: #FF6B35; border-radius: 50%; border: 3px solid white; box-shadow: 0 3px 8px rgba(0,0,0,0.3); font-size: 14px;">
+                                                {{ $markerLetter }}
+                                            </div>
                                             <!-- Office Label -->
-                                            <div class="position-absolute bg-white px-2 py-1 rounded shadow-sm" style="top: 35px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: bold; color: {{ $markerColor }}; white-space: nowrap; opacity: 0; transition: opacity 0.3s;">
+                                            <div class="position-absolute bg-white px-2 py-1 rounded shadow-sm" style="top: 38px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: bold; color: #FF6B35; white-space: nowrap; opacity: 0; transition: opacity 0.3s;">
                                                 {{ $office->city }}
                                             </div>
                                         </div>
