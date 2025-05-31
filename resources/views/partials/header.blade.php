@@ -29,6 +29,7 @@
                 <a href="{{ route('home') }}" class="hover:text-motorcare-orange font-medium transition duration-200">Home</a>
                 <a href="{{ route('about') }}" class="hover:text-motorcare-orange font-medium transition duration-200">About Us</a>
                 <a href="{{ route('brands') }}" class="hover:text-motorcare-orange font-medium transition duration-200">Our Brands</a>
+                <a href="{{ route('people-care') }}" class="hover:text-motorcare-orange font-medium transition duration-200">People Care</a>
                 <a href="{{ route('offices') }}" class="hover:text-motorcare-orange font-medium transition duration-200">Offices</a>
                 <a href="{{ route('gallery') }}" class="hover:text-motorcare-orange font-medium transition duration-200">Gallery</a>
                 <a href="{{ route('contact') }}" class="hover:text-motorcare-orange font-medium transition duration-200">Contact Us</a>
@@ -51,9 +52,13 @@
         <a href="{{ route('home') }}" class="block py-2 text-gray-800 hover:text-motorcare-orange font-medium transition">Home</a>
         <a href="{{ route('about') }}" class="block py-2 text-gray-800 hover:text-motorcare-orange font-medium transition">About Us</a>
         <a href="{{ route('brands') }}" class="block py-2 text-gray-800 hover:text-motorcare-orange font-medium transition">Our Brands</a>
+        <a href="{{ route('people-care') }}" class="block py-2 text-gray-800 hover:text-motorcare-orange font-medium transition">People Care</a>
         <a href="{{ route('offices') }}" class="block py-2 text-gray-800 hover:text-motorcare-orange font-medium transition">Offices</a>
         <a href="{{ route('gallery') }}" class="block py-2 text-gray-800 hover:text-motorcare-orange font-medium transition">Gallery</a>
         <a href="{{ route('contact') }}" class="block py-2 text-gray-800 hover:text-motorcare-orange font-medium transition">Contact Us</a>
+        <a href="{{ route('contact') }}" class="block py-3 mt-2 bg-motorcare-orange hover:bg-orange-500 text-white text-center rounded-full font-semibold transition">
+            <i class="fas fa-quote-left mr-2"></i>Request Quote
+        </a>
     </div>
     <!-- Drawer Menu -->
     <div id="drawer-overlay" class="fixed inset-0 bg-black bg-opacity-40 z-50 hidden"></div>
@@ -70,9 +75,17 @@
             <a href="{{ route('home') }}" class="block text-lg text-gray-800 hover:text-motorcare-orange font-semibold transition">Home</a>
             <a href="{{ route('about') }}" class="block text-lg text-gray-800 hover:text-motorcare-orange font-semibold transition">About Us</a>
             <a href="{{ route('brands') }}" class="block text-lg text-gray-800 hover:text-motorcare-orange font-semibold transition">Our Brands</a>
+            <a href="{{ route('people-care') }}" class="block text-lg text-gray-800 hover:text-motorcare-orange font-semibold transition">People Care</a>
             <a href="{{ route('offices') }}" class="block text-lg text-gray-800 hover:text-motorcare-orange font-semibold transition">Offices</a>
             <a href="{{ route('gallery') }}" class="block text-lg text-gray-800 hover:text-motorcare-orange font-semibold transition">Gallery</a>
             <a href="{{ route('contact') }}" class="block text-lg text-gray-800 hover:text-motorcare-orange font-semibold transition">Contact Us</a>
+
+            <!-- Request Quote Button - Prominent in Side Menu -->
+            <div class="pt-6 border-t border-gray-200">
+                <a href="{{ route('contact') }}" class="block text-lg bg-motorcare-orange hover:bg-orange-500 text-white text-center py-4 rounded-full font-bold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
+                    <i class="fas fa-quote-left mr-2"></i>Request Quote
+                </a>
+            </div>
         </nav>
         <!-- Social Icons -->
         <div class="px-8 pb-8 mt-8">

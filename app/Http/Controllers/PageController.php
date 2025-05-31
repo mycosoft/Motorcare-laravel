@@ -109,4 +109,12 @@ class PageController extends Controller
         $brands = Brand::orderBy('name')->get();
         return view('brands', compact('brands'));
     }
+
+    /**
+     * Display the people care page.
+     */
+    public function peopleCare()
+    {
+        return view('people-care');
+    }
 }

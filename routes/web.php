@@ -24,6 +24,7 @@ Route::post('/contact-us', [PageController::class, 'submitContact'])->name('cont
 Route::get('/services', [PageController::class, 'services'])->name('services');
 Route::get('/gallery', [PageController::class, 'gallery'])->name('gallery');
 Route::get('/brands', [PageController::class, 'brands'])->name('brands');
+Route::get('/people-care', [PageController::class, 'peopleCare'])->name('people-care');
 Route::get('/offices', [OfficeController::class, 'index'])->name('offices');
 Route::get('/api/offices/city/{city}', [OfficeController::class, 'getOfficesByCity'])->name('offices.by-city');
 Route::get('/api/offices/{id}', [OfficeController::class, 'getOfficeDetails'])->name('offices.details');

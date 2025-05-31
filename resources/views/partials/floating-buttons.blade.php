@@ -41,51 +41,53 @@
 </div>
 
 <script>
-// Back to Top Button Functionality
-const backToTopButton = document.getElementById('backToTop');
+document.addEventListener('DOMContentLoaded', function() {
+    // Back to Top Button Functionality
+    const backToTopButton = document.getElementById('backToTop');
 
-// Show/hide button based on scroll position
-window.addEventListener('scroll', function() {
-    if (window.pageYOffset > 300) {
-        backToTopButton.classList.remove('opacity-0', 'translate-y-4');
-        backToTopButton.classList.add('opacity-100', 'translate-y-0');
-    } else {
-        backToTopButton.classList.add('opacity-0', 'translate-y-4');
-        backToTopButton.classList.remove('opacity-100', 'translate-y-0');
-    }
-});
-
-// Smooth scroll to top function
-function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
+    // Show/hide button based on scroll position
+    window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+            backToTopButton.classList.remove('opacity-0', 'translate-y-4');
+            backToTopButton.classList.add('opacity-100', 'translate-y-0');
+        } else {
+            backToTopButton.classList.add('opacity-0', 'translate-y-4');
+            backToTopButton.classList.remove('opacity-100', 'translate-y-0');
+        }
     });
-}
 
-// Contact Menu Toggle Functionality
-let contactMenuOpen = false;
-const contactMenu = document.getElementById('contactMenu');
-const contactButton = document.getElementById('contactButton');
-
-function toggleContactMenu() {
-    contactMenuOpen = !contactMenuOpen;
-
-    if (contactMenuOpen) {
-        contactMenu.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
-        contactMenu.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
-    } else {
-        contactMenu.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
-        contactMenu.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+    // Smooth scroll to top function
+    window.scrollToTop = function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     }
-}
 
-// Close contact menu when clicking outside
-document.addEventListener('click', function(event) {
-    if (!contactButton.contains(event.target) && !contactMenu.contains(event.target)) {
+    // Contact Menu Toggle Functionality
+    let contactMenuOpen = false;
+    const contactMenu = document.getElementById('contactMenu');
+    const contactButton = document.getElementById('contactButton');
+
+    window.toggleContactMenu = function() {
+        contactMenuOpen = !contactMenuOpen;
+
         if (contactMenuOpen) {
-            toggleContactMenu();
+            contactMenu.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+            contactMenu.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+        } else {
+            contactMenu.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+            contactMenu.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
         }
     }
+
+    // Close contact menu when clicking outside
+    document.addEventListener('click', function(event) {
+        if (!contactButton.contains(event.target) && !contactMenu.contains(event.target)) {
+            if (contactMenuOpen) {
+                toggleContactMenu();
+            }
+        }
+    });
 });
 </script>
