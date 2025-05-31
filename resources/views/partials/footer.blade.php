@@ -34,7 +34,7 @@
         </div>
     </div>
     <hr class="border-t border-white/20 my-8 w-4/5 mx-auto">
-    <div class="text-center text-sm text-gray-300">&copy; {{ date('Y') }} Motorcare Uganda. Powered by Mycosoft Technologies.</div>
+    <div class="text-center text-sm text-gray-300">&copy; {{ date('Y') }} Motorcare Uganda. All rights reserved.</div>
 </footer>
 
 @include('partials.floating-buttons')
