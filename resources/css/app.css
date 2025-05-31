@@ -1,0 +1,39 @@
+@import './adminlte3.css';
+
+/* Custom sidebar active menu styling */
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active {
+    background-color: #007bff;
+    color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active:hover {
+    background-color: #0069d9;
+}
+
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active i {
+    color: #fff;
+}
+
+/* Hover effect for non-active menu items */
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+/* Active menu item icon color */
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active .nav-icon {
+    color: #fff;
+}
+
+/* Submenu active state */
+.sidebar-dark-primary .nav-sidebar .nav-treeview > .nav-item > .nav-link.active {
+    background-color: rgba(0, 123, 255, 0.1);
+    color: #fff;
+}
+
+/* Submenu hover state */
+.sidebar-dark-primary .nav-sidebar .nav-treeview > .nav-item > .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
