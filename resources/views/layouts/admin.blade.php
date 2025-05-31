@@ -133,6 +133,14 @@
                                 </a>
                             </li>
                         @endpermission
+                        @permission('offices.read')
+                            <li class="nav-item">
+                                <a href="{{ route('admin.offices.index') }}" class="nav-link {{ request()->routeIs('admin.offices.*') ? 'active' : '' }}">
+                                    <i class="nav-icon fas fa-building"></i>
+                                    <p>{{ __('Offices Management') }}</p>
+                                </a>
+                            </li>
+                        @endpermission
                         @permission('contacts.read')
                             <li class="nav-item">
                                 <a href="{{ route('admin.contacts.index') }}" class="nav-link {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}">

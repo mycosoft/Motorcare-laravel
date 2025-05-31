@@ -149,64 +149,210 @@
             <!-- Map -->
             <div class="col-lg-8 col-xl-9">
                 <div class="map-container">
-                    <!-- Google Maps Embed -->
-                    <div id="googleMapContainer" style="height: 600px; width: 100%; border-radius: 8px; overflow: hidden; position: relative;">
-                        <!-- Google Maps Embed - Zoomed out view of Uganda with markers -->
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4073303.1384897232!2d29.5!3d1.0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x177dbb0d3f0b5555%3A0x7b5b5b5b5b5b5b5b!2sUganda!5e0!3m2!1sen!2sus!4v1234567890123!5m2!1sen!2sus&z=5"
-                            width="100%"
-                            height="600"
-                            style="border:0;"
-                            allowfullscreen=""
-                            loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
+                    <!-- Interactive Google Map with Markers -->
+                    <div id="map" style="height: 600px; width: 100%; border-radius: 8px;"></div>
 
-                        <!-- Custom Markers Overlay -->
-                        <div class="position-absolute top-0 start-0 w-100 h-100" style="pointer-events: none;">
+                    <script>
+                    let map;
+                    let markers = [];
+                    let currentInfoWindow = null; // Track currently open info window
+
+                    function initMap() {
+                        // Center map on Uganda with better coverage
+                        const ugandaCenter = { lat: 1.373333, lng: 32.290275 };
+
+                        // Initialize map to match your reference screenshot - focused Uganda view
+                        map = new google.maps.Map(document.getElementById("map"), {
+                            zoom: 6.8, // Correct zoom to show full Uganda like in your screenshot
+                            center: ugandaCenter,
+                            mapTypeId: 'roadmap', // Roadmap to show cities, roads, and features clearly
+                            restriction: {
+                                latLngBounds: {
+                                    north: 4.5,   // Show a bit more north like your screenshot
+                                    south: -2.0,  // Show a bit more south like your screenshot
+                                    east: 35.5,   // Show a bit more east like your screenshot
+                                    west: 29.0,   // Show a bit more west like your screenshot
+                                },
+                                strictBounds: false, // Allow slight panning like your screenshot
+                            },
+                            // Clean styling to match your reference image - no yellow roads
+                            styles: [
+                                {
+                                    featureType: "water",
+                                    elementType: "geometry",
+                                    stylers: [{ color: "#4fc3f7" }] // Blue for Lake Victoria
+                                },
+                                {
+                                    featureType: "landscape",
+                                    elementType: "geometry",
+                                    stylers: [{ color: "#e8f5e8" }] // Light green terrain
+                                },
+                                {
+                                    featureType: "road.highway",
+                                    elementType: "geometry",
+                                    stylers: [{ visibility: "off" }] // Hide yellow/orange highways
+                                },
+                                {
+                                    featureType: "road.arterial",
+                                    elementType: "geometry",
+                                    stylers: [{ visibility: "off" }] // Hide arterial roads
+                                },
+                                {
+                                    featureType: "road.local",
+                                    elementType: "geometry",
+                                    stylers: [{ visibility: "off" }] // Hide local roads
+                                },
+                                {
+                                    featureType: "administrative.locality",
+                                    elementType: "labels.text",
+                                    stylers: [
+                                        { visibility: "on" },
+                                        { color: "#000000" }, // Darker color for better visibility
+                                        { weight: "bold" }    // Bold text for better readability
+                                    ]
+                                },
+                                {
+                                    featureType: "administrative.locality",
+                                    elementType: "labels.text.stroke",
+                                    stylers: [
+                                        { color: "#ffffff" }, // White outline for contrast
+                                        { weight: 2 }
+                                    ]
+                                },
+                                {
+                                    featureType: "administrative.country",
+                                    elementType: "geometry.stroke",
+                                    stylers: [{ color: "#999999" }, { weight: 1 }] // Country borders
+                                }
+                            ]
+                        });
+
+                        // Office locations from database
+                        const offices = [
                             @foreach($offices as $index => $office)
-                                @if($office->latitude && $office->longitude)
-                                    @php
-                                        // Convert lat/lng to approximate pixel positions for Uganda map
-                                        $latRange = 4.2 - (-1.5); // 5.7
-                                        $lngRange = 35.0 - 29.5; // 5.5
+                            {
+                                position: { lat: {{ $office->latitude }}, lng: {{ $office->longitude }} },
+                                title: "{{ $office->name }}",
+                                city: "{{ $office->city }}",
+                                address: "{{ $office->address }}",
+                                phone: "{{ $office->phone }}",
+                                email: "{{ $office->email }}",
+                                label: "{{ chr(65 + $index) }}",
+                                id: {{ $office->id }}
+                            }@if(!$loop->last),@endif
+                            @endforeach
+                        ];
 
-                                        $normalizedLat = (4.2 - $office->latitude) / $latRange;
-                                        $normalizedLng = ($office->longitude - 29.5) / $lngRange;
+                        // Create markers for each office
+                        offices.forEach((office, index) => {
+                            // Create custom marker with orange background and white letter
+                            const marker = new google.maps.Marker({
+                                position: office.position,
+                                map: map,
+                                title: office.title,
+                                label: {
+                                    text: office.label,
+                                    color: 'white',
+                                    fontWeight: 'bold',
+                                    fontSize: '14px' // Perfect size for focused Uganda view
+                                },
+                                icon: {
+                                    path: google.maps.SymbolPath.CIRCLE,
+                                    fillColor: '#FF6B35', // Orange color matching your screenshot
+                                    fillOpacity: 1,
+                                    strokeColor: '#ffffff',
+                                    strokeWeight: 2, // Clean border
+                                    scale: 20 // Perfect size for focused Uganda view
+                                }
+                            });
 
-                                        $topPercent = $normalizedLat * 100;
-                                        $leftPercent = $normalizedLng * 100;
-
-                                        // Ensure markers stay within bounds
-                                        $topPercent = max(5, min(95, $topPercent));
-                                        $leftPercent = max(5, min(95, $leftPercent));
-
-                                        // Use letters for markers
-                                        $markerLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
-                                        $markerLetter = $markerLetters[$index % count($markerLetters)];
-                                    @endphp
-
-                                    <div class="position-absolute office-map-marker"
-                                         style="top: {{ $topPercent }}%; left: {{ $leftPercent }}%; transform: translate(-50%, -100%); pointer-events: auto; cursor: pointer; z-index: 10;"
-                                         data-office-id="{{ $office->id }}"
-                                         onclick="highlightOfficeCard('{{ $office->id }}')">
-                                        <!-- Marker with Letter -->
-                                        <div class="position-relative">
-                                            <!-- Orange circular marker with letter -->
-                                            <div class="d-flex align-items-center justify-center text-white fw-bold"
-                                                 style="width: 32px; height: 32px; background: #FF6B35; border-radius: 50%; border: 3px solid white; box-shadow: 0 3px 8px rgba(0,0,0,0.3); font-size: 14px;">
-                                                {{ $markerLetter }}
-                                            </div>
-                                            <!-- Office Label -->
-                                            <div class="position-absolute bg-white px-2 py-1 rounded shadow-sm" style="top: 38px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: bold; color: #FF6B35; white-space: nowrap; opacity: 0; transition: opacity 0.3s;">
-                                                {{ $office->city }}
-                                            </div>
+                            // Create interactive info window with close functionality
+                            const infoWindow = new google.maps.InfoWindow({
+                                content: `
+                                    <div style="padding: 15px; max-width: 320px; font-family: Arial, sans-serif;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                            <h6 style="color: #FF6B35; margin: 0; font-weight: bold; font-size: 16px;">${office.title}</h6>
+                                        </div>
+                                        <div style="border-left: 3px solid #FF6B35; padding-left: 12px;">
+                                            <p style="margin: 0 0 8px 0; font-size: 14px; color: #333;">
+                                                <i class="fas fa-map-marker-alt" style="color: #FF6B35; margin-right: 8px; width: 16px;"></i>
+                                                <strong>City:</strong> ${office.city}
+                                            </p>
+                                            <p style="margin: 0 0 8px 0; font-size: 14px; color: #333;">
+                                                <i class="fas fa-home" style="color: #FF6B35; margin-right: 8px; width: 16px;"></i>
+                                                <strong>Address:</strong> ${office.address}
+                                            </p>
+                                            <p style="margin: 0 0 8px 0; font-size: 14px; color: #333;">
+                                                <i class="fas fa-phone" style="color: #FF6B35; margin-right: 8px; width: 16px;"></i>
+                                                <strong>Phone:</strong> <a href="tel:${office.phone}" style="color: #FF6B35; text-decoration: none;">${office.phone}</a>
+                                            </p>
+                                            <p style="margin: 0; font-size: 14px; color: #333;">
+                                                <i class="fas fa-envelope" style="color: #FF6B35; margin-right: 8px; width: 16px;"></i>
+                                                <strong>Email:</strong> <a href="mailto:${office.email}" style="color: #FF6B35; text-decoration: none;">${office.email}</a>
+                                            </p>
                                         </div>
                                     </div>
-                                @endif
-                            @endforeach
-                        </div>
-                    </div>
+                                `,
+                                pixelOffset: new google.maps.Size(0, -10) // Position above marker
+                            });
+
+                            // Add click listener to marker for interactive functionality
+                            marker.addListener('click', () => {
+                                // Close currently open info window if any
+                                if (currentInfoWindow) {
+                                    currentInfoWindow.close();
+                                }
+
+                                // Open this info window
+                                infoWindow.open(map, marker);
+                                currentInfoWindow = infoWindow;
+
+                                // Highlight corresponding office card
+                                highlightOfficeCard(office.id);
+                            });
+
+                            // Close info window when clicking elsewhere on map
+                            map.addListener('click', () => {
+                                if (currentInfoWindow) {
+                                    currentInfoWindow.close();
+                                    currentInfoWindow = null;
+                                }
+                            });
+
+                            // Store marker and info window
+                            markers.push({
+                                marker: marker,
+                                infoWindow: infoWindow,
+                                office: office
+                            });
+                        });
+                    }
+
+                    // Function to highlight office card when marker is clicked
+                    function highlightOfficeCard(officeId) {
+                        // Remove active class from all cards
+                        document.querySelectorAll('.office-card').forEach(card => {
+                            card.classList.remove('active');
+                        });
+
+                        // Add active class to selected card
+                        const selectedCard = document.querySelector(`[data-office-id="${officeId}"]`);
+                        if (selectedCard) {
+                            selectedCard.classList.add('active');
+                            selectedCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }
+
+                    // Load Google Maps API
+                    window.initMap = initMap;
+                    </script>
+
+
+
+                    <!-- Load Google Maps API with your API key -->
+                    <script async defer
+                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQTomBWk-ck2BqhTO8MNZWXvK9m_AJUZw&callback=initMap">
+                    </script>
                 </div>
             </div>
         </div>

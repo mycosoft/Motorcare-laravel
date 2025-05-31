@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\GalleryCategoryController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\GalleryImageController;
+use App\Http\Controllers\Admin\OfficeController as AdminOfficeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\OfficeController;
@@ -38,6 +39,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('teams', TeamController::class)->except(['show']);
         Route::resource('contacts', ContactController::class)->only(['index', 'show', 'destroy']);
         Route::post('contacts/{contact}/toggle-read', [ContactController::class, 'toggleRead'])->name('contacts.toggle-read');
+        Route::resource('offices', AdminOfficeController::class);
 
         // Gallery Categories
         Route::resource('gallery-categories', GalleryCategoryController::class)->except(['show']);
